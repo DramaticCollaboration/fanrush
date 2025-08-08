@@ -1,6 +1,7 @@
 
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-md  flex items-center justify-center q-px-lg q-py-xl">
+    <div class="login-card shadow-2 rounded bg-white q-pa-lg" style="max-width: 1000px; width: 100%;">
     <!-- Welcome Section -->
     <div class="row items-center q-mb-lg">
       <div class="text-h5 q-mr-auto">안녕하세요, {{ userDisplayName }}님!</div>
@@ -91,6 +92,7 @@
           </q-card>
         </div>
       </div>
+    </div>
     </div>
   </q-page>
 </template>

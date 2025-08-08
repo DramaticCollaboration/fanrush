@@ -118,6 +118,9 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
+import { useAuthStore, User } from 'stores/auth'
+
+const auth = useAuthStore()
 
 const router = useRouter()
 const $q = useQuasar()
@@ -136,8 +139,8 @@ async function submitLogin() {
 
     if (response.success) {
       // 로그인 성공 처리
-      localStorage.setItem('token', response.token)
-      localStorage.setItem('user', JSON.stringify(response.user))
+      auth.setAuth(response.token, response.user as User)
+
 
       $q.notify({
         type: 'positive',
@@ -146,7 +149,7 @@ async function submitLogin() {
 
       // 관리자인 경우 관리자 대시보드로, 일반 사용자인 경우 일반 대시보드로 이동
       if (response.user.role === 'admin') {
-        await router.push('/dashboard')
+        await router.push('/admin')
       } else {
         await router.push('/dashboard')
       }

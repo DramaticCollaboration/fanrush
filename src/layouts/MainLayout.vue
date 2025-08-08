@@ -2,12 +2,13 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated class="bg-primary text-white">
-      <q-toolbar>
+      <q-toolbar v-if="isLoggedIn">
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+
         <q-toolbar-title @click="goToMain" class="cursor-pointer">
           꿈즈
         </q-toolbar-title>
 
-        <div v-if="isLoggedIn">
           <q-btn flat round dense icon="notifications">
             <q-badge color="red" floating>
               2
@@ -28,7 +29,7 @@
               </q-item>
             </q-list>
           </q-btn-dropdown>
-        </div>
+
       </q-toolbar>
     </q-header>
 
@@ -74,23 +75,29 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from 'stores/auth'
+
+const auth = useAuthStore()
 
 const router = useRouter()
 const leftDrawerOpen = ref(false)
 
 // 로그인 상태 체크 (실제로는 상태 관리 라이브러리나 컴포지션 함수를 사용)
-const isLoggedIn = computed(() => {
-  return localStorage.getItem('token') !== null
-})
+const isLoggedIn = computed(() => auth.isAuthenticated)
+
 
 const goToMain = () => {
   router.push('/dashboard')
 }
 
 const handleLogout = () => {
-  localStorage.removeItem('token')
-  localStorage.removeItem('user')
+  auth.clearAuth()
+
   router.push('/login')
+}
+
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 </script>
 
