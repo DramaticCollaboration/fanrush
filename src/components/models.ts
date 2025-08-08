@@ -76,6 +76,19 @@ export interface ProjectIssue {
   updatedAt: string;
 }
 
+export interface Project {
+  id?: string;
+  name: string;
+  summary: string;
+  description: string; // HTML 문자열
+  specification: string;
+  screens: ProjectScreen[];
+  team: TeamMember[];
+  chat: ChatMessage[];
+  issues: ProjectIssue[];
+}
+
+
 export interface ProjectInvitation {
   id: string;
   email: string;
