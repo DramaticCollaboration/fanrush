@@ -172,7 +172,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { date } from 'quasar';
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
@@ -182,7 +182,8 @@ const router = useRouter()
 
 // 상태 변수들
 const currentTab = ref('editor');
-const currentSection = ref(null);
+const currentSection = ref('overview');
+
 const editorContent = ref('');
 const showVersionHistory = ref(false);
 const saving = ref(false);
@@ -262,6 +263,145 @@ const versionHistory = ref([
   }
 ]);
 
+// TypeScript
+const sectionSamples: Record<string, string> = {
+  overview: `
+    <h2>개요</h2>
+    <p>이 문서는 제품/서비스의 목적, 대상 사용자, 핵심 가치와 범위를 설명합니다.</p>
+    <h3>목표</h3>
+    <ul>
+      <li>핵심 사용자 플로우를 명확히 정의</li>
+      <li>기능 범위와 비범위를 합의</li>
+      <li>팀 간 공통 이해 기반 마련</li>
+    </ul>
+    <h3>대상 사용자</h3>
+    <ul>
+      <li>초기 베타 사용자(개발자/기획자/디자이너)</li>
+      <li>소규모 프로젝트 팀</li>
+    </ul>
+    <h3>범위(비범위)</h3>
+    <ul>
+      <li>범위: 프로젝트 생성/협업/댓글/간단한 배포</li>
+      <li>비범위: 오프라인 모드, 복잡한 보고서</li>
+    </ul>
+  `,
+  features: `
+    <h2>주요 기능</h2>
+    <ol>
+      <li><b>프로젝트 관리</b> — 생성/수정, 팀 초대, 권한(Owner/Editor/Viewer)</li>
+      <li><b>화면 관리</b> — 썸네일 업로드, 설명, 미리보기</li>
+      <li><b>이슈 트래킹</b> — 생성/상태 변경(open/in_progress/closed), 담당자</li>
+      <li><b>댓글/주석</b> — 인라인 코멘트, 스레드</li>
+      <li><b>알림</b> — 상태 변경/멘션/배포 완료</li>
+    </ol>
+    <h3>수용 기준(예시)</h3>
+    <ul>
+      <li>이슈 상태 변경 시 타임라인에 기록된다.</li>
+      <li>댓글 작성 후 1초 이내 UI에 반영된다.</li>
+      <li>읽지 않은 알림이 헤더 배지에 표시된다.</li>
+    </ul>
+  `,
+  flow: `
+    <h2>화면 흐름</h2>
+    <h3>핵심 시나리오</h3>
+    <ol>
+      <li>프로젝트 생성 → 팀원 초대 → 화면 등록 → 이슈 생성/할당</li>
+      <li>대시보드 진입 → 미해결 이슈 확인 → 상세 이동 → 상태 변경</li>
+    </ol>
+    <h3>유저 스토리</h3>
+    <ul>
+      <li>기획자: "새 이슈를 만들고 담당자를 지정하고 싶다."</li>
+      <li>개발자: "화면 변경 이력을 빠르게 확인하고 싶다."</li>
+      <li>디자이너: "댓글로 디자인 피드백을 남기고 싶다."</li>
+    </ul>
+    <p><i>(다이어그램 영역) flowchart는 별도 툴/이미지로 첨부</i></p>
+  `,
+  data: `
+    <h2>데이터 모델</h2>
+    <h3>엔티티 요약</h3>
+    <ul>
+      <li>Project: id, name, summary, createdAt, updatedAt</li>
+      <li>Screen: id, projectId, title, imageUrl, description</li>
+      <li>Issue: id, projectId, title, status, assigneeId, createdAt</li>
+      <li>User: id, name, avatar, role</li>
+      <li>Comment: id, targetId, userId, content, createdAt</li>
+    </ul>
+    <h3>간단 스키마(JSON)</h3>
+    <pre><code>{
+  "Project": {
+    "id": "string",
+    "name": "string",
+    "summary": "string",
+    "createdAt": "ISODate",
+    "updatedAt": "ISODate"
+  },
+  "Issue": {
+    "id": "string",
+    "projectId": "string",
+    "title": "string",
+    "status": "open|in_progress|closed",
+    "assigneeId": "string|null",
+    "createdAt": "ISODate"
+  }
+}</code></pre>
+  `,
+  api: `
+    <h2>API 요약</h2>
+    <h3>프로젝트</h3>
+    <ul>
+      <li>GET /api/projects — 프로젝트 목록</li>
+      <li>GET /api/projects/{projectId} — 프로젝트 상세</li>
+      <li>POST /api/projects — 프로젝트 생성</li>
+    </ul>
+    <h3>이슈</h3>
+    <ul>
+      <li>GET /api/projects/{projectId}/issues?status=... — 이슈 목록</li>
+      <li>POST /api/projects/{projectId}/issues — 이슈 생성</li>
+      <li>PATCH /api/projects/{projectId}/issues/{issueId} — 상태 변경</li>
+    </ul>
+    <h3>예시 요청/응답</h3>
+    <pre><code>POST /api/projects
+Content-Type: application/json
+
+{
+  "name": "대시보드 개선",
+  "summary": "위젯 성능 최적화"
+}</code></pre>
+    <pre><code>{
+  "data": {
+    "id": "prj-001",
+    "name": "대시보드 개선",
+    "summary": "위젯 성능 최적화",
+    "createdAt": "2025-08-09T09:00:00.000Z"
+  }
+}</code></pre>
+  `,
+  priority: `
+    <h2>우선순위(MoSCoW)</h2>
+    <h3>Must</h3>
+    <ul>
+      <li>이슈 생성/상태 변경/담당자 지정</li>
+      <li>댓글 작성/표시</li>
+      <li>프로젝트/화면 기본 CRUD</li>
+    </ul>
+    <h3>Should</h3>
+    <ul>
+      <li>알림 설정(이메일/인앱)</li>
+      <li>간단한 배포 프리뷰</li>
+    </ul>
+    <h3>Could</h3>
+    <ul>
+      <li>분석 대시보드 위젯</li>
+      <li>가상 스크롤 최적화</li>
+    </ul>
+    <h3>Won't</h3>
+    <ul>
+      <li>오프라인 모드</li>
+      <li>고급 리포팅</li>
+    </ul>
+  `
+};
+
 // 계산된 속성
 const compiledMarkdown = computed(() => {
   // 마크다운을 HTML로 변환
@@ -269,17 +409,23 @@ const compiledMarkdown = computed(() => {
 });
 
 // 메서드들
+const defaultSample = (key: string) =>
+  `<h2>${key}</h2><p>내용을 입력하세요...</p>`;
+
 const loadSection = async () => {
-  if (!currentSection.value) return;
+  const key = currentSection.value as any;
+  if (!key) return;
 
   try {
-    // API 호출 시뮬레이션
-    await new Promise(resolve => setTimeout(resolve, 500));
-    editorContent.value = `# ${currentSection.value}\n\n내용을 입력하세요...`;
+    // 로딩 시뮬레이션
+    await new Promise(resolve => setTimeout(resolve, 300));
+    editorContent.value = sectionSamples[key.value] ?? defaultSample(key.label);
   } catch (error) {
     console.error('섹션 로드 실패:', error);
+    editorContent.value = defaultSample(key);
   }
 };
+
 
 const handleEditorChange = (content: string) => {
   // 변경 사항 처리
@@ -330,6 +476,10 @@ const restoreVersion = async (versionId: number) => {
 const formatDate = (timestamp: Date) => {
   return date.formatDate(timestamp, 'YYYY-MM-DD HH:mm');
 };
+
+onMounted(() => {
+  loadSection();
+});
 </script>
 
 <style>
