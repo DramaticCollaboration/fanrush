@@ -178,7 +178,7 @@ const notifications = ref<UiNotification[]>([
       createdAt: new Date(Date.now() - 2 * 60 * 1000).toISOString(), // 2분 전
       read: false,
       type: 'comment',
-      link: '/projects/sample'
+      link: '/project/sample'
     },
     {
       id: 'n002',
@@ -187,7 +187,7 @@ const notifications = ref<UiNotification[]>([
       createdAt: new Date(Date.now() - 8 * 60 * 1000).toISOString(), // 8분 전
       read: false,
       type: 'issue',
-      link: '/projects/sample'
+      link: '/project/sample'
     },
     {
       id: 'n003',
@@ -196,7 +196,7 @@ const notifications = ref<UiNotification[]>([
       createdAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(), // 15분 전
       read: false,
       type: 'mention',
-      link: '/projects/sample'
+      link: '/project/sample'
     },
     {
       id: 'n004',
@@ -205,7 +205,7 @@ const notifications = ref<UiNotification[]>([
       createdAt: new Date(Date.now() - 45 * 60 * 1000).toISOString(), // 45분 전
       read: true,
       type: 'system',
-      link: '/projects/sample'
+      link: '/project/sample'
     },
     {
       id: 'n005',
@@ -214,7 +214,7 @@ const notifications = ref<UiNotification[]>([
       createdAt: new Date(Date.now() - 2 * 3600 * 1000).toISOString(), // 2시간 전
       read: false,
       type: 'issue',
-      link: '/projects/sample'
+      link: '/project/sample'
     },
     {
       id: 'n006',
@@ -223,7 +223,7 @@ const notifications = ref<UiNotification[]>([
       createdAt: new Date(Date.now() - 5 * 3600 * 1000).toISOString(), // 5시간 전
       read: true,
       type: 'system',
-      link: '/projects/sample'
+      link: '/project/sample'
     },
     {
       id: 'n007',
@@ -232,7 +232,7 @@ const notifications = ref<UiNotification[]>([
       createdAt: new Date(Date.now() - 12 * 3600 * 1000).toISOString(), // 12시간 전
       read: true,
       type: 'system',
-      link: '/projects/sample'
+      link: '/project/sample'
     },
     {
       id: 'n008',
@@ -241,7 +241,7 @@ const notifications = ref<UiNotification[]>([
       createdAt: new Date(Date.now() - 24 * 3600 * 1000).toISOString(), // 1일 전
       read: true,
       type: 'mention',
-      link: '/projects/sample'
+      link: '/project/sample'
     },
     {
       id: 'n009',
@@ -250,7 +250,7 @@ const notifications = ref<UiNotification[]>([
       createdAt: new Date(Date.now() - 2 * 24 * 3600 * 1000).toISOString(), // 2일 전
       read: true,
       type: 'system',
-      link: '/projects/sample'
+      link: '/project/sample'
     },
     {
       id: 'n010',
@@ -259,7 +259,7 @@ const notifications = ref<UiNotification[]>([
       createdAt: new Date(Date.now() - 3 * 24 * 3600 * 1000).toISOString(), // 3일 전
       read: true,
       type: 'comment',
-      link: '/projects/sample'
+      link: '/project/sample'
     },
     {
       id: 'n011',
@@ -268,7 +268,7 @@ const notifications = ref<UiNotification[]>([
       createdAt: new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString(), // 7일 전
       read: true,
       type: 'issue',
-      link: '/projects/sample'
+      link: '/project/sample'
     },
     {
       id: 'n012',
@@ -277,7 +277,7 @@ const notifications = ref<UiNotification[]>([
       createdAt: new Date(Date.now() - 14 * 24 * 3600 * 1000).toISOString(), // 14일 전
       read: true,
       type: 'system',
-      link: '/projects/sample'
+      link: '/project/sample'
     },
     {
       id: 'n013',
@@ -286,7 +286,7 @@ const notifications = ref<UiNotification[]>([
       createdAt: new Date(Date.now() - 30 * 24 * 3600 * 1000).toISOString(), // 30일 전
       read: true,
       type: 'comment',
-      link: '/projects/sample'
+      link: '/project/sample'
     }
   ]
 )
