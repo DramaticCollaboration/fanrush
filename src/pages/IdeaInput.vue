@@ -112,9 +112,16 @@
               outline
             />
             <q-btn
-              label="다음 단계로"
+              label="AI 분석"
               color="primary"
               type="submit"
+              unelevated
+            />
+            <q-btn
+              v-if="aiAnalysis.keywords.length > 0"
+              label="다음 단계로"
+              color="primary"
+              @click="goNext"
               unelevated
             />
           </div>
@@ -201,6 +208,11 @@ function createTag(val: string, done: (val?: string) => void) {
 }
 
 // 임시 저장
+async function goNext() {
+    router.push('/idea/sample/name-logo')
+}
+
+// 임시 저장
 async function saveDraft() {
   try {
     // API 호출
@@ -223,11 +235,6 @@ async function onSubmit() {
   try {
     // API 호출 및 AI 분석
     await simulateAIAnalysis();
-
-    // 분석 결과가 있으면 다음 단계로 이동
-    if (aiAnalysis.keywords.length > 0) {
-      router.push('/idea/sample/name-logo')
-    }
   } catch (error) {
     $q.notify({
       type: 'negative',

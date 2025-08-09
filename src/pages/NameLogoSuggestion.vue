@@ -7,11 +7,21 @@
         <div class="row items-center q-mb-lg">
           <div class="text-h5">서비스 이름 및 로고 제안</div>
           <q-space />
+
           <q-btn
+            v-if="!isDisabled"
             color="primary"
             icon-right="arrow_forward"
             label="다음 단계로"
-            :disable="!selectedName || !selectedLogo"
+            :disable="isDisabled"
+            @click="proceedToNext"
+          />
+          <q-btn
+            v-else
+            color="primary"
+            icon-right="arrow_forward"
+            :label="disabledReason"
+            :disable="isDisabled"
             @click="proceedToNext"
           />
         </div>
@@ -195,7 +205,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router'
 
@@ -211,6 +221,18 @@ const generatingNames = ref(false);
 const generatingLogos = ref(false);
 const colorPickerDialog = ref(false);
 const selectedLogoColors = ref(['#1976D2', '#ffffff']);
+
+const isDisabled = computed(() => !selectedName.value || !selectedLogo.value)
+
+const disabledReason = computed(() => {
+  const missing: string[] = []
+  if (!selectedName.value) missing.push('이름')
+  if (!selectedLogo.value) missing.push('로고')
+  return missing.length
+    ? `${missing.join('과 ')}를 선택하면 계속 진행할 수 있어요.`
+    : ''
+})
+
 
 // 로고 스타일 설정
 const logoStyle = ref('modern');
