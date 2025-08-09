@@ -182,7 +182,7 @@ const router = useRouter()
 
 // 상태 변수들
 const currentTab = ref('editor');
-const currentSection = ref('overview');
+const currentSection = ref({ label: '개요', value: 'overview' });
 
 const editorContent = ref('');
 const showVersionHistory = ref(false);

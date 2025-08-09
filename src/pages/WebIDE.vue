@@ -59,6 +59,7 @@ const errorLines = ref<number[]>([])
 
 function startBuild() {
   // 빌드 API 호출 로직
+  router.push('/idea/sample/build')
 }
 function runProject() {
   router.push('/idea/sample/build')
