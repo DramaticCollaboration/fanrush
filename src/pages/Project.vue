@@ -11,7 +11,7 @@
           <div class="col-auto">
             <q-btn-group>
               <q-btn color="white" text-color="primary" label="팀원 초대" icon="person_add" @click="showInviteDialog = true" />
-              <q-btn color="white" text-color="primary" label="프로젝트 설정" icon="settings" />
+              <q-btn color="white" text-color="primary" label="프로젝트 설정" icon="settings" @click="showSettings = true"/>
             </q-btn-group>
           </div>
         </div>
@@ -216,11 +216,20 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <ProjectSettingsDialog
+      v-model="showSettings"
+      :project-id="currentProjectId"
+      @saved="afterSaved"
+    />
+
   </q-page>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import ProjectSettingsDialog from '@/components/ProjectSettingsDialog.vue'
+
+
 import MarkdownIt from 'markdown-it'
 import DOMPurify from 'dompurify'
 
@@ -232,6 +241,16 @@ const showInviteDialog = ref(false)
 const inviteEmail = ref('')
 const inviteRole = ref('viewer')
 const newMessage = ref('')
+
+
+const showSettings = ref(false)
+const currentProjectId = 'prj-<ID>' // 실제 프로젝트 ID로 대체
+
+function afterSaved() {
+  // 저장 후 목록/헤더 등 갱신이 필요하면 여기서 처리
+  // e.g., 프로젝트 이름/가시성 갱신
+}
+
 
 const roleOptions = [
   { label: '관리자', value: 'owner' },
