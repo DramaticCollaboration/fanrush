@@ -78,6 +78,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'like'): void
   (e: 'save'): void
+  (e: 'showComment'): void
   (e: 'tag-click', tag: string): void
 }>()
 
@@ -98,7 +99,7 @@ function shareProject() {
 }
 
 function showComments() {
-  // 댓글 표시 기능 구현
+  emit('showComment')
 }
 </script>
 

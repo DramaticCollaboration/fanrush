@@ -105,6 +105,13 @@
           메뉴
         </q-item-label>
 
+        <q-item clickable v-ripple to="/admin" v-if="isAdmin">
+          <q-item-section avatar>
+            <q-icon name="admin_panel_settings" />
+          </q-item-section>
+          <q-item-section>관리 대시보드</q-item-section>
+        </q-item>
+
         <q-item clickable v-ripple to="/dashboard">
           <q-item-section avatar>
             <q-icon name="dashboard" />
@@ -158,6 +165,7 @@ const leftDrawerOpen = ref(false)
 
 // 로그인 상태 체크 (실제로는 상태 관리 라이브러리나 컴포지션 함수를 사용)
 const isLoggedIn = computed(() => auth.isAuthenticated)
+const isAdmin = computed(() => auth.isAdmin)
 
 
 

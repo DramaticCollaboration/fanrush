@@ -9,14 +9,15 @@
             <q-btn-toggle
               v-model="feedType"
               spread
-              :options="[
-                { label: '전체', value: 'all' },
-                { label: '팔로잉', value: 'following' },
-                { label: '인기', value: 'trending' }
-              ]"
-              color="primary"
-              text-color="white"
-              class="full-width"
+              no-caps
+              unelevated
+              rounded
+              :options="feedOptions"
+              color="grey-2"
+            text-color="grey-9"
+            :toggle-color="feedToggleColor"
+            toggle-text-color="white"
+            class="full-width"
             />
           </div>
           <div class="col-12 col-sm-auto">
@@ -43,6 +44,7 @@
             :item="item"
             @like="toggleLike(item)"
             @save="toggleSave(item)"
+            @showComment="toggleComment(item)"
             @tag-click="addTag"
           />
         </template>
@@ -102,7 +104,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import FeedItem from 'components/FeedItem.vue'
 import type { FeedItem as FeedItemType, Comment, FeedType } from 'components/models'
 
@@ -114,6 +116,25 @@ const page = ref(1)
 const showCommentDialog = ref(false)
 const comments = ref<Comment[]>([])
 const newComment = ref('')
+
+
+
+
+const feedOptions = [
+  { label: '전체', value: 'all', icon: 'dynamic_feed' },
+  { label: '팔로잉', value: 'following', icon: 'group' },
+  { label: '인기', value: 'trending', icon: 'trending_up' }
+]
+
+const feedToggleColor = computed(() => {
+  switch (feedType.value) {
+    case 'all': return 'grey-8'      // 전체 = 회색
+    case 'following': return 'secondary' // 팔로잉 = 보조색
+    case 'trending': return 'orange-8'    // 인기 = 주황/경고계열
+    default: return 'primary'
+  }
+})
+
 
 const availableTags = [
   'Web', 'Mobile', 'AI', 'Game', 'Education',
@@ -133,7 +154,7 @@ const loadMore = async () => {
     projectId: `project-${page.value}-${index}`,
     title: `멋진 프로젝트 ${page.value}-${index}`,
     summary: '이 프로젝트는 AI를 활용한 혁신적인 웹 서비스입니다.',
-    thumbnail: `https://placehold.co/600x${300 + index}`,
+    thumbnail: `https://placehold.co/600x${300 + index}?text=Thumbnail+${page.value}-${index}`,
     author: {
       id: 'user1',
       name: '김개발',
@@ -162,6 +183,11 @@ function toggleSave(item: FeedItemType) {
   item.isSaved = !item.isSaved
 }
 
+function toggleComment(item: FeedItemType) {
+  showCommentDialog.value = true
+}
+
+
 function addTag(tag: string) {
   if (!selectedTags.value.includes(tag)) {
     selectedTags.value.push(tag)
@@ -179,7 +205,7 @@ function addComment() {
     id: Date.now().toString(),
     userId: 'current-user',
     userName: '현재 사용자',
-    userAvatar: 'https://placehold.co/100x100',
+    userAvatar: 'https://placehold.co/100x100?text=Comment+' + comments.value.length,
     content: newComment.value,
     createdAt: new Date().toISOString(),
     likes: 0

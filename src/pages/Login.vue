@@ -20,6 +20,19 @@
 
       <!-- Form Sections -->
       <div v-if="activeTab === 'login'">
+        <q-banner
+          v-if="showAdminHint"
+          class="bg-blue-1 text-blue-10 q-mb-md"
+          rounded
+        >
+          <template #avatar>
+            <q-icon name="admin_panel_settings" />
+          </template>
+          관리자 계정으로 로그인 시 관리자 기능에 접근할 수 있습니다.
+          <div class="q-mt-xs">
+            아이디: <code>{{ ADMIN_EMAIL }}</code> · 비밀번호: <code>{{ ADMIN_PASSWORD }}</code>
+          </div>
+        </q-banner>
         <q-form @submit="submitLogin">
           <q-input
             v-model="loginForm.email"
@@ -110,6 +123,7 @@
           </q-btn>
         </div>
       </div>
+
     </div>
   </q-page>
 </template>
@@ -130,6 +144,11 @@ const activeTab = ref('login');
 const loginForm = ref({ email: '', password: '' });
 const signupForm = ref({ email: '', password: '', displayName: '' });
 const acceptTerms = ref(false);
+
+const ADMIN_EMAIL = 'admin@kkumz.com'
+const ADMIN_PASSWORD = 'admin'
+const showAdminHint = true
+
 
 // Methods
 async function submitLogin() {

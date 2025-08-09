@@ -69,7 +69,7 @@
 
             <q-tab-panels v-model="activeTab" animated>
               <q-tab-panel name="overview">
-                <div class="text-body1" v-html="project.description"></div>
+                <div class="text-body1" v-html="descriptionHtml"></div>
               </q-tab-panel>
 
               <q-tab-panel name="screens">
@@ -758,13 +758,51 @@ const sampleSpecification: string = `
 const project = ref<Project>({
   name: '꿈즈 프로젝트',
   summary: 'AI 기반 웹 서비스 개발 플랫폼',
-  description: `<p>꿈즈는 AI를 활용하여 웹 서비스 개발을 도와주는 혁신적인 플랫폼입니다.</p>
-                <p>주요 기능:</p>
-                <ul>
-                  <li>AI 기반 코드 생성</li>
-                  <li>실시간 협업</li>
-                  <li>자동 배포</li>
-                </ul>`,
+  description: `# 꿈즈 소개
+
+꿈즈는 아이디어를 빠르게 실험 가능한 목업과 프로토타입으로 전환하고, 팀과 함께 즉시 협업·배포까지 이어지는 AI 기반 웹 서비스 제작 플랫폼입니다. 한 번의 초안으로 끝나지 않고, 피드백-수정-배포 주기를 짧게 가져가며 “만들어 보며 배우는” 흐름을 지향합니다.
+
+## 한눈에 보기
+- 초안에서 배포까지를 하나의 흐름으로 단축
+- AI 도우미로 화면/컴포넌트/코드 스니펫 자동 생성
+- 실시간 공동 편집과 코멘트로 빠른 합의
+- 미리보기 URL과 히스토리로 변경 추적
+- 알림과 워크플로 자동화로 운영 부담 최소화
+
+## 주요 기능
+1. AI 기반 코드 생성
+   - 요구사항을 자연어로 입력하면 화면 스켈레톤, 상태 관리, API 호출 코드 등을 제안합니다.
+   - 예: “회원가입 폼과 유효성 검사, 제출 후 토스트 노출”을 요청하면 관련 폼 컴포넌트/검증 로직/피드백 UI를 함께 생성합니다.
+
+2. 실시간 협업
+   - 동시 편집, 커서 위치 표시, 인라인 코멘트로 의견을 남기고 해결 상태를 관리합니다.
+   - 멘션으로 담당자 호출, 변경점에 대한 스레드 논의가 가능합니다.
+
+3. 자동 배포
+   - 브랜치/버전별 프리뷰 URL 제공
+   - 커밋/버튼 한 번으로 스테이징/프로덕션 빌드
+   - TLS 상태와 배포 로그를 대시보드에서 확인
+
+4. 알림·워크플로
+   - 이슈 상태 변경, 리뷰 요청, 배포 완료 등 주요 이벤트를 알림으로 받아보세요.
+   - 필요 없는 알림은 설정에서 끌 수 있습니다. [알림 설정](/projects/{PROJECT_ID}/settings/notifications)
+
+5. 보안 및 거버넌스
+   - 역할 기반 권한(Owner/Editor/Viewer)
+   - 감사 로그로 변경 이력 추적
+   - 프로젝트 단위 접근 제어
+
+## 시작하기
+1. 새 프로젝트 만들기
+   - 아이디어 요약을 작성하고 템플릿(예: 대시보드, 랜딩, 폼)을 선택합니다.
+2. 요구사항 정리하기
+   - 스펙 탭에 핵심 사용자 플로우, 화면 목록, API 스펙을 작성하세요.
+3. AI로 초안 생성
+   - “화면 만들기”를 실행하면 초기 컴포넌트와 네비게이션이 생성됩니다.
+4. 미리보기·피드백
+   - 프리뷰 URL을 공유해 팀 피드백을 받고, 코멘트로 개선을 트래킹합니다.
+
+## 예시 코드 스니펫`,
   specification: sampleSpecification,
   screens: sampleScreens,
   team: sampleTeam,
@@ -780,6 +818,11 @@ const md = new MarkdownIt({
 const specHtml = computed(() =>
   DOMPurify.sanitize(md.render(project.value.specification || ''))
 )
+
+const descriptionHtml = computed(() =>
+  DOMPurify.sanitize(md.render(project.value.description || ''))
+)
+
 
 const isOwner = computed(() => true) // 실제로는 현재 사용자 권한 체크
 
