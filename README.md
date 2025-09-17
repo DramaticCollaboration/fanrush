@@ -1,6 +1,6 @@
-# Kkumz App (kkumz)
+# FanRUsh (fanrush)
 
-당신의 번뜩이는 아이디어를 AI로 빠르게 목업으로 만들고, 젊고 톡톡 튀는 커뮤니티에서 함께할 팀원까지 만나는 곳
+K-POP 팬덤의 폭발적인 구매력을 72시간 내에 수익화하는 원스톱 여행 솔루션
 
 ## Install the dependencies
 

@@ -15,7 +15,9 @@ export default defineConfigWithVueTs(
      *
      * ESLint requires "ignores" key to be the only one in this object
      */
-    // ignores: []
+    ignores: [
+      "src/**",
+    ]
   },
 
   pluginQuasar.configs.recommended(),
@@ -39,7 +41,6 @@ export default defineConfigWithVueTs(
     files: ['**/*.ts', '**/*.vue'],
     rules: {
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
-      "@typescript-eslint/no-implicit-any": "off",
     },
   },
   // https://github.com/vuejs/eslint-config-typescript
@@ -65,16 +66,6 @@ export default defineConfigWithVueTs(
     // add your custom rules here
     rules: {
       'prefer-promise-reject-errors': 'off',
-      "@typescript-eslint/no-implicit-any": "off",
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/restrict-template-expressions": "off",
-      "@typescript-eslint/no-floating-promises": "off",
-      "@typescript-eslint/consistent-type-imports": "off",
-      "vue/multi-word-component-names": "off",
-      "@typescript-eslint/no-unused-vars": "off",
-      "@typescript-eslint/require-await": "off",
-      "@typescript-eslint/no-misused-promises": "off",
-      "no-useless-escape": "off",
 
       // allow debugger during development only
       'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',

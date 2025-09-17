@@ -4,8 +4,6 @@
 import { defineConfig } from '#q-app/wrappers';
 import { fileURLToPath } from 'node:url';
 
-import path from 'path'
-
 export default defineConfig((ctx) => {
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
@@ -35,15 +33,6 @@ export default defineConfig((ctx) => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
     build: {
-      alias: {
-        '@': path.join(__dirname, './src'),
-        assets: path.join(__dirname, './src/assets'),
-        boot: path.join(__dirname, './src/boot'),
-        stores: path.join(__dirname, './src/stores'),
-        pages: path.join(__dirname, './src/pages'),
-        layouts: path.join(__dirname, './src/layouts'),
-        components: path.join(__dirname, './src/components')
-      },
       target: {
         browser: ['es2022', 'firefox115', 'chrome115', 'safari14'],
         node: 'node20',
@@ -52,12 +41,7 @@ export default defineConfig((ctx) => {
       typescript: {
         strict: true,
         vueShim: true,
-        extendTsConfig: (tsConfig) => {
-          tsConfig.compilerOptions = {
-            ...tsConfig.compilerOptions,
-            noImplicitAny: false,
-          };
-        },
+        // extendTsConfig (tsConfig) {}
       },
 
       vueRouterMode: 'hash', // available values: 'hash', 'history'
@@ -100,11 +84,7 @@ export default defineConfig((ctx) => {
         [
           'vite-plugin-checker',
           {
-            vueTsc: true,
-            eslint: {
-              lintCommand: 'eslint -c ./eslint.config.js "./src*/**/*.{ts,js,mjs,cjs,vue}"',
-              useFlatConfig: true,
-            },
+            vueTsc: true
           },
           { server: false },
         ],
@@ -119,7 +99,18 @@ export default defineConfig((ctx) => {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
     framework: {
-      config: {},
+      config: {
+        brand: {
+          primary: '#FF6F00',
+          secondary: '#FF9800',
+          accent: '#FFC107',
+          dark: '#1D1D1D',
+          positive: '#21BA45',
+          negative: '#C10015',
+          info: '#31CCEC',
+          warning: '#F2C037'
+        }
+      },
 
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
@@ -132,9 +123,7 @@ export default defineConfig((ctx) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: [
-        'Notify'  // Notify 플러그인 추가
-      ],
+      plugins: [],
     },
 
     // animations: 'all', // --- includes all animations
@@ -230,7 +219,7 @@ export default defineConfig((ctx) => {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'kkumz',
+        appId: 'fanrush',
       },
     },
 
